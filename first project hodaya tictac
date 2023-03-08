@@ -1,0 +1,151 @@
+import java.util.Scanner;
+
+//   The Scanner class is imported and initialized as an object called s, which will be used to receive input from the user via the command line.
+////An array of char data type called 't' is declared and initialized with a length of 10. This array will be used to represent the game board for a tic-tac-toe game.
+////A variable called turn is initialized with the value 'X'. This variable is used to keep track of which player's turn it is.
+////A boolean variable called 'gameover' is initialized with the value false. This variable is used to determine if the game is over or not.
+public class Main {
+
+    static Scanner s = new Scanner (System.in);
+    static char[] t = new char[10];
+    static char turn = 'X';
+    static boolean gameover = false;
+//    ////////////////////////////////////////////////////////////////////////////////
+
+// The for loop iterates over each element of the t array, which is an array of char data type representing the game board.
+//The loop variable a takes on the value of each index of the t array in turn.
+//Inside the loop, the current element of the t array, indexed by a, is assigned the space character ' '.
+// This initializes each element of the t array to a blank space character, indicating that the game board is empty at the start of the game.
+    public static void main(String[] args) {
+        for (int a:t)
+            t[a] = ' ';
+        update();
+    }
+//    /////////////////////////////////////////////////////////////////////////////
+//   this code formats and prints out a simple text-based representation of the game board,
+// showing the current state of the board at any given point in the game.
+    public static void layout() {
+        System.out.println(t[7]+":"+t[8]+":"+t[9]);
+        System.out.println("......");
+        System.out.println(t[4]+":"+t[5]+":"+t[6]);
+        System.out.println("......");
+        System.out.println(t[1]+":"+t[2]+":"+t[3]);
+    }
+//    /////////////////////////////////////////////////////////////////////////////////////////////
+//   The first line declares a variable called place of integer data type, which will be used to store the position where the player wants to place their move.
+//The while loop checks whether the game is not over. The loop will continue to execute as long as the gameover variable is false.
+//Inside the loop, the System.out.println() method is called to print out a message indicating whose turn it is.
+//The layout() method is called to display the current state of the game board.
+//A do-while loop is used to ask the player to enter a valid move. The loop will continue to execute as long as the value of place is less than 1 or greater than 9.
+//Inside the loop, the System.out.print() method is called to display a message asking the player to enter a number between 1 and 9.
+//The s.nextInt() method is used to read an integer input from the user, which is assigned to the place variable.
+//After the player enters a valid move, the System.out.println() method is called to print a newline character.
+//The check() method is called to check whether the player's move results in a win or a draw, and update the game state accordingly.
+//If the game is over (i.e., if gameover is true), the loop will exit, and the update() method will return.
+    public static void update() {
+        int place;
+        while(!gameover) {
+            System.out.println("\""+turn+"\" is playing");
+            layout();
+            do {
+                System.out.print("enter a number between 1-9: ");
+                place = s.nextInt();
+            }while(place<1||place>9);
+            System.out.println("\n");
+            check(place);
+        }
+    }
+//    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  The method takes an integer parameter a, which represents the position where the current player wants to place their move.
+//The if statement checks whether the position a on the game board is already occupied by either 'X' or 'O'. If the position is empty,
+// the code inside the if block will execute.
+//Inside the if block, the value of turn is assigned to the t array at index a, representing the current player's move on the game board.
+//The if-else statement is used to switch the turn to the next player. If the current player is 'X', the turn will switch to 'O', and vice versa.
+//The wincheck() method is called to check whether the current player has won the game, or the game has resulted in a draw.
+//If the position a on the game board is already occupied by either 'X' or 'O', the code inside the else block will execute.
+// This block prints a message indicating that the player cannot place their move at that position.
+//The update() method is called to update the game board display after each move.
+    public static void check(int a) {
+        if (!(t[a] == 'X' || t[a] == 'O')) {
+            t[a] = turn;
+            if (turn == 'X')
+                turn = 'O';
+            else
+                turn = 'X';
+            wincheck();
+        }else
+            System.out.println("you can't put here");
+        update();
+    }
+//    ////////////////////////////////////////////////////////////////////////////////////////////////
+// It checks if either player "X" or "O" has won the game or if the game has ended in a draw.
+//The method checks for all possible winning combinations of "X" and "O" on the game board by checking the values of the t array at specific indices.
+// If three matching values are found in a row, column, or diagonal, the corresponding player wins.
+//If none of the winning combinations are found, the isEmpty() method is called to check if the game is over due to a draw.
+//If "X" wins, the winx() method is called to print the winning message and set gameover to true. Similarly, if "O" wins, the wino() method is called.
+    public static void wincheck() {
+        // CHECK IF "X" WIN
+        if (t[1] == 'X' && t[2] == 'X' && t[3] == 'X') winx();
+        else if (t[4] == 'X' && t[5] == 'X' && t[6] == 'X') winx();
+        else if (t[7] == 'X' && t[8] == 'X' && t[9] == 'X') winx();
+        else if (t[1] == 'X' && t[4] == 'X' && t[7] == 'X') winx();
+        else if (t[2] == 'X' && t[5] == 'X' && t[8] == 'X') winx();
+        else if (t[3] == 'X' && t[6] == 'X' && t[9] == 'X') winx();
+        else if (t[1] == 'X' && t[5] == 'X' && t[9] == 'X') winx();
+        else if (t[3] == 'X' && t[5] == 'X' && t[7] == 'X') winx();
+            // CHECK IF "O" WIN
+        else if (t[1] == 'O' && t[2] == 'O' && t[3] == 'O') wino();
+        else if (t[4] == 'O' && t[5] == 'O' && t[6] == 'O') wino();
+        else if (t[7] == 'O' && t[8] == 'O' && t[9] == 'O') wino();
+        else if (t[1] == 'O' && t[4] == 'O' && t[7] == 'O') wino();
+        else if (t[2] == 'O' && t[5] == 'O' && t[8] == 'O') wino();
+        else if (t[3] == 'O' && t[6] == 'O' && t[9] == 'O') wino();
+        else if (t[1] == 'O' && t[5] == 'O' && t[9] == 'O') wino();
+        else if (t[3] == 'O' && t[5] == 'O' && t[7] == 'O') wino();
+        else isEmpty();
+//        ////////////////////////////////////////////////////////////////////
+    }
+// It is called when player "X" wins the game.
+//The method first prints the current state of the game board using the layout() method.
+// It then prints a message indicating that player "X" has won the game.
+//Finally, it sets the value of the gameover variable to true,
+    public static void winx() {
+        layout();
+        System.out.println("player \"X\" win");
+        gameover = true;
+    }
+//    //////////////////////////////////////////////////////////////////////////////////////
+
+//  when player "O" wins the game.
+//The method first prints the current state of the game board using the layout() method.
+// It then prints a message indicating that player "O" has won the game.
+    public static void wino() {
+        layout();
+        System.out.println("player \"O\" win");
+        gameover = true;
+    }
+///////////////////////////////////////////////////////////////////////////////////////////////
+//    The isEmpty() method is used to check if there are any empty spaces left
+//    The method checks each element of the t array, which represents the Tic Tac Toe board, 
+//    to see if it is either 'X' or 'O'. If every element of the array is either 'X' or 'O',
+//    the game is considered over and the gameover variable is set to true. 
+//    The layout() method is then called to display the final board layout.
+    public static void isEmpty() {
+        if ((t[1] == 'X' || t[1] == 'O') &&
+                (t[2] == 'X' || t[2] == 'O') &&
+                (t[3] == 'X' || t[3] == 'O') &&
+                (t[4] == 'X' || t[4] == 'O') &&
+                (t[5] == 'X' || t[5] == 'O') &&
+                (t[6] == 'X' || t[6] == 'O') &&
+                (t[7] == 'X' || t[7] == 'O') &&
+                (t[8] == 'X' || t[8] == 'O') &&
+                (t[9] == 'X' || t[9] == 'O')){
+            System.out.println("there are no moves left");
+            gameover = true;
+            layout();
+        }
+    }
+
+}
+
+
